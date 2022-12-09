@@ -1,37 +1,42 @@
-// Init storage
+// initialise storage class
 const storage = new Storage();
-// Get stored location data
+
+// get location from stored data
 const weatherLocation = storage.getLocationData();
-// Init weather object
-const weather = new Weather(weatherLocation.city, weatherLocation.state);
-// Init UI
+
+// initialise weather obj
+const weather = new Weather(weatherLocation.city, weatherLocation.country);
+
+// initialise UI obj
 const ui = new UI();
 
-// Get weather on DOM load
-document.addEventListener('DOMContentLoaded', getWeather);
+// get the weather when DOM loads
+document.addEventListener("DOMContentLoaded", getWeather);
 
-// Change location event
-document.getElementById('w-change-btn').addEventListener('click', (e) => {
-  const city = document.getElementById('city').value;
-  const state = document.getElementById('state').value;
+// change location event
+document.getElementById("change-btn").addEventListener("click", e => {
+  const city = document.getElementById("city").value;
+  const country = document.getElementById("country").value;
 
   // Change location
-  weather.changeLocation(city, state);
+  weather.changeLocation(city, country);
 
-  // Set location in LS
-  storage.setLocationData(city, state);
+  // set location to local storage
+  storage.setLocationData(city, country);
 
-  // Get and display weather
+  // get weather and display UI again
   getWeather();
 
-  // Close modal
-  $('#locModal').modal('hide');
+  // close model using jQuery
+  $("#locModal").modal("hide");
 });
 
-function getWeather(){
-  weather.getWeather()
+// fetch weather function
+function getWeather() {
+  weather
+    .getWeather()
     .then(results => {
-      ui.paint(results);
+      ui.display(results);
     })
     .catch(err => console.log(err));
 }
